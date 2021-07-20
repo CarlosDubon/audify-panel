@@ -6,21 +6,21 @@ import {toast} from "react-hot-toast";
 import axios from "axios";
 import {useSelector} from "react-redux";
 
-const Typography = (props) => {
+const Typography = ({place = {_id: "", name: "", latitude: "", longitude: "", radius: 0}, ...props}) => {
   const token = useSelector((state) => state.user.token)
 
   const [form,setForm] = useState({
-    name:"",
-    lat:"",
-    lng:"",
-    radius:0
+    name: place.name,
+    lat: place.latitude,
+    lng: place.longitude,
+    radius: place.radius
   })
   const [file,setFile] =useState()
 
   const onSubmit=async ()=>{
     try {
 
-      if(form.name!=="" && form.lat!=="" && form.lng!=="" && file && form.radius > 1){
+      if(form.name!=="" && form.lat!=="" && form.lng!=="" && file && form.radius >= 1){
         const fd = new FormData()
         fd.append("name",form.name)
         fd.append("latitude",form.lat)
@@ -43,7 +43,36 @@ const Typography = (props) => {
       }
     }catch (e){
       if(e){
-        throw e
+        throw e.message
+      }
+      throw "Error interno, por favor intente más tarde."
+    }
+
+  };
+
+  const onEdit=async ()=>{
+    try {
+      const fd = new FormData()
+      form.name && fd.append("name",form.name);
+      form.lat  && fd.append("latitude",form.lat);
+      form.lng  && fd.append("longitude",form.lng);
+      file      && fd.append("sound",file);
+      (form.radius >= 1) && fd.append("radius", form.radius);
+
+      let res = await axios.put(`${process.env.REACT_APP_API_URI}/speaker/update/${place._id}`,fd,{
+        headers:{
+          'Content-Type': 'multipart/form-data',
+          'Authorization':`Bearer ${token}`
+        }
+      })
+      if(res.status !== 200){
+        throw "Hubo un error al actualizar"
+      } else {
+        props.onClose()
+      }
+    }catch (e){
+      if(e){
+        throw e.message
       }
       throw "Error interno, por favor intente más tarde."
     }
@@ -52,7 +81,7 @@ const Typography = (props) => {
 
   const triggerSubmit=()=>{
     toast.promise(
-      onSubmit(),
+      props.edit ? onEdit() : onSubmit(),
       {
         loading:"Guardando...",
         success:"Guardado exitosamente",
@@ -71,7 +100,7 @@ const Typography = (props) => {
   return (
     <>
       <CCard className="mb-4">
-        <CCardHeader> Agregar lugar </CCardHeader>
+        {props.edit || <CCardHeader> Agregar lugar </CCardHeader>}
         <CCardBody>
           <CForm>
             <div className="row">
