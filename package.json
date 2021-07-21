@@ -1,4 +1,5 @@
 {
+
   "name": "@coreui/coreui-free-react-admin-template",
   "description": "CoreUI Free React Admin Template",
   "version": "4.0.0-beta.0",
@@ -17,7 +18,7 @@
       "url": "https://github.com/orgs/coreui/people"
     }
   ],
-  "homepage": ".",
+  "homepage": "http://CarlosDubon.github.io/sraag-panel",
   "copyright": "Copyright 2017-2021 creativeLabs Łukasz Holeczek",
   "license": "MIT",
   "private": true,
@@ -39,6 +40,7 @@
     "classnames": "^2.3.1",
     "core-js": "^3.15.2",
     "enzyme": "^3.11.0",
+    "gh-pages": "^3.2.3",
     "google-maps-react": "^2.0.6",
     "jdenticon": "^3.1.0",
     "prop-types": "^15.7.2",
@@ -69,7 +71,9 @@
     "test:cov": "npm test -- --coverage --watchAll=false",
     "test:debug": "react-scripts --inspect-brk test --runInBand",
     "eject": "react-scripts eject",
-    "changelog": "auto-changelog --starting-version 3.0.0 --commit-limit false --hide-credit"
+    "changelog": "auto-changelog --starting-version 3.0.0 --commit-limit false --hide-credit",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   },
   "bugs": {
     "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"

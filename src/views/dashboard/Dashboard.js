@@ -28,7 +28,6 @@ const WidgetsBrand = lazy(() => import('../components/widgets/WidgetsBrand.js'))
 
 const Dashboard = (props) => {
   const token = useSelector((state) => state.user.token)
-
   const random = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }

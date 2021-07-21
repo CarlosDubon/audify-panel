@@ -10,14 +10,17 @@ import {
   CDropdownToggle,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import {useSelector} from "react-redux";
-
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom"
 const AppHeaderDropdown = () => {
   const token = useSelector(state => state.user.token)
+  const history = useHistory()
+  const dispatch = useDispatch()
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={`http://tinygraphs.com/squares/${token}?theme=heatwave`} />
+        <div style={{background:"#000",width:"30px",height:"30px"}} className={"avatar-img"}></div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
@@ -73,9 +76,14 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
+        <CDropdownItem
+          onClick={()=>{
+            dispatch({ type: 'update_user',token:null })
+            history.replace("/")
+          }}
+          href="#">
           <CIcon name="cil-lock-locked" className="me-2" />
-          Lock Account
+          Cerrar sesión
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>
