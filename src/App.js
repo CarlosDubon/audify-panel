@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {HashRouter, Route, Switch} from 'react-router-dom'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import './scss/style.scss'
 import {Toaster} from "react-hot-toast";
 
@@ -24,7 +24,7 @@ class App extends Component {
       <>
 
         <Toaster/>
-        <HashRouter>
+        <BrowserRouter>
           <React.Suspense fallback={loading}>
             <Switch>
               <Route exact path="/" name="Login Page" render={(props) => <Login {...props} />}/>
@@ -39,7 +39,7 @@ class App extends Component {
               <Route path="/dashboard" name="Home" render={(props) => <DefaultLayout {...props} />}/>
             </Switch>
           </React.Suspense>
-        </HashRouter>
+        </BrowserRouter>
 
       </>
 

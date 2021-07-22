@@ -72,7 +72,7 @@ const Login = (props) => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={(e)=>e.preventDefault()}>
                     <h1>Sraag Admin</h1>
                     <p className="text-medium-emphasis">Inicia sesión con tu cuenta</p>
                     <CInputGroup className="mb-3">
@@ -97,7 +97,7 @@ const Login = (props) => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs="6">
-                        <CButton onClick={triggerReq} color="primary" className="px-4">
+                        <CButton type={"submit"} onClick={triggerReq} color="primary" className="px-4">
                           Iniciar sesion
                         </CButton>
                       </CCol>

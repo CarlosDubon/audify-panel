@@ -21,7 +21,7 @@ import axios from "axios";
 import {useSelector} from "react-redux";
 import {confirmAlert} from "react-confirm-alert";
 import {toast} from "react-hot-toast";
-import Typography from '../typography/Typography';
+import NewPlace from './NewPlace';
 
 const Places = () => {
   const token = useSelector(state => state.user.token)
@@ -30,7 +30,7 @@ const Places = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [placeToDelete, setPlaceToDelete] = useState({})
   const [modalDeleteVisible, setModalDeteleVisible] = useState(false);
-  
+
   useEffect(()=>{
     fetchPlaces()
   },[])
@@ -73,7 +73,7 @@ const Places = () => {
       console.log(e)
     }
   }
-  
+
   return (
     <>
       <CCard className="mb-4">
@@ -109,7 +109,7 @@ const Places = () => {
                             setModalDeteleVisible(true)
                           }}
                           className={"text-white"} color="danger">Eliminar</CButton>
-                        <CButton 
+                        <CButton
                           onClick = {()=>{
                             setPlaceToEdit(place);
                             setModalVisible(true);
@@ -125,34 +125,34 @@ const Places = () => {
         </CCardBody>
       </CCard>
 
-      <CModal 
+      <CModal
         visible={modalVisible} size="xl"
         onDismiss={()=> setModalVisible(false)}>
-          <CModalHeader onDismiss={()=> closeEditModal()}> 
-            <CModalTitle>Editar lugar</CModalTitle> 
+          <CModalHeader onDismiss={()=> closeEditModal()}>
+            <CModalTitle>Editar lugar</CModalTitle>
           </CModalHeader>
           <CModalBody>
-            <Typography place={placeToEdit} edit onClose = {()=> closeEditModal()}/>
+            <NewPlace place={placeToEdit} edit onClose = {()=> closeEditModal()}/>
           </CModalBody>
       </CModal>
 
-      <CModal 
-        visible={modalDeleteVisible} 
+      <CModal
+        visible={modalDeleteVisible}
         onDismiss={()=> setModalDeteleVisible(false)}>
-          <CModalHeader onDismiss={()=> closeDeleteModal()}> 
-            <CModalTitle> Eliminar lugar </CModalTitle> 
+          <CModalHeader onDismiss={()=> closeDeleteModal()}>
+            <CModalTitle> Eliminar lugar </CModalTitle>
           </CModalHeader>
           <CModalBody>
-              <p> 
+              <p>
                 ¿Estás seguro/a de eliminar {placeToDelete.name}? Esta acción es irreversible.
               </p>
           </CModalBody>
           <CModalFooter>
-            <CButton 
+            <CButton
               onClick={async ()=> {
-                await deletePlace(placeToDelete._id); 
+                await deletePlace(placeToDelete._id);
                 closeDeleteModal();
-              } } 
+              } }
               color = "danger" className={"text-white"}>
               Confirmar
             </CButton>

@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
 import {CButton, CCard, CCardBody, CCardHeader, CContainer, CForm, CFormControl, CFormLabel} from '@coreui/react'
-import CMap from "../../components/widgets/CMap";
-import DropZone from "../../components/widgets/DropZone";
+import CMap from "../widgets/CMap";
+import DropZone from "../widgets/DropZone";
 import {toast} from "react-hot-toast";
 import axios from "axios";
 import {useSelector} from "react-redux";
 
-const Typography = ({place = {_id: "", name: "", latitude: "", longitude: "", radius: 0}, ...props}) => {
+const NewPlace = ({place = {_id: "", name: "", latitude: "", longitude: "", radius: 0}, ...props}) => {
   const token = useSelector((state) => state.user.token)
 
   const [form,setForm] = useState({
@@ -174,4 +174,4 @@ const Typography = ({place = {_id: "", name: "", latitude: "", longitude: "", ra
   )
 }
 
-export default Typography
+export default NewPlace
