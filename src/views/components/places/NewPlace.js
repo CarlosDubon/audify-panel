@@ -43,6 +43,9 @@ const NewPlace = ({place = {_id: "", name: "", latitude: "", longitude: "", radi
       }
     }catch (e){
       if(e){
+        if(e.response){
+          throw e.response.data.errors
+        }
         throw e.message
       }
       throw "Error interno, por favor intente más tarde."
@@ -72,6 +75,9 @@ const NewPlace = ({place = {_id: "", name: "", latitude: "", longitude: "", radi
       }
     }catch (e){
       if(e){
+        if(e.response){
+          throw e.response.data.errors
+        }
         throw e.message
       }
       throw "Error interno, por favor intente más tarde."
