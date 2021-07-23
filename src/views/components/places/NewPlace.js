@@ -6,7 +6,7 @@ import {toast} from "react-hot-toast";
 import axios from "axios";
 import {useSelector} from "react-redux";
 
-const NewPlace = ({place = {_id: "", name: "", latitude: "", longitude: "", radius: 0}, ...props}) => {
+const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius: 0}, ...props}) => {
   const token = useSelector((state) => state.user.token)
 
   const [form,setForm] = useState({
@@ -131,7 +131,9 @@ const NewPlace = ({place = {_id: "", name: "", latitude: "", longitude: "", radi
               </div>
               <div className="col-md-8 mt-3">
                 <CContainer>
-                  <CMap onSelect={handleLatLngSet}/>
+                  <CMap
+                    place={ props.edit && place } 
+                    onSelect={handleLatLngSet} radius={form.radius}/>
                 </CContainer>
               </div>
               <div className="col-md-4">
@@ -161,7 +163,7 @@ const NewPlace = ({place = {_id: "", name: "", latitude: "", longitude: "", radi
                       onChange={event => setForm({...form,radius: parseFloat(event.target.value) })}
                       type={"number"}
                       min={1}
-                      id="place-long"
+                      id="place-radius"
                     />
                   </div>
                 </div>

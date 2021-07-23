@@ -30,9 +30,9 @@ const Places = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [placeToDelete, setPlaceToDelete] = useState({})
   const [modalDeleteVisible, setModalDeteleVisible] = useState(false);
+  const [deleteAll, setDeleteAll] = useState(false);
 
   const [selectedPlaces,setSelectedPlaces] = useState([])
-  console.log(token)
   useEffect(()=>{
     fetchPlaces()
   },[])
@@ -75,6 +75,15 @@ const Places = () => {
       console.log(e)
     }
   }
+  const handleSelectAll=(e) => {
+    if(e.target.checked === true){
+      setSelectedPlaces(places.map(place => place._id))
+    }else{
+      setSelectedPlaces([])
+    }
+
+    setDeleteAll(e.target.checked)
+  }
   const handleSelect=(e,id)=>{
     if(e.target.checked === true){
       setSelectedPlaces([...selectedPlaces,id])
@@ -100,6 +109,7 @@ const Places = () => {
       })
       if(res.status === 200){
         fetchPlaces()
+        setDeleteAll(false)
         setSelectedPlaces(selectedPlaces.filter(function (e) {
           return this.indexOf(e) < 0
         },selectedPlaces))
@@ -126,7 +136,13 @@ const Places = () => {
           <CTable responsive>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell> </CTableHeaderCell>
+                <CTableHeaderCell> 
+                <CFormCheck
+                    checked={deleteAll}
+                    style={Style.cell}
+                    onChange={handleSelectAll}
+                    id="All" />
+                </CTableHeaderCell>
                 <CTableHeaderCell>Nombre</CTableHeaderCell>
                 <CTableHeaderCell>Longitud</CTableHeaderCell>
                 <CTableHeaderCell>Latitud</CTableHeaderCell>
@@ -141,6 +157,7 @@ const Places = () => {
                   <CTableRow key={place._id}>
                     <CTableDataCell style={Style.cell} >
                       <CFormCheck
+                        checked={selectedPlaces.findIndex(p => p === place._id) < 0 ? false : true}
                         onChange={(e)=>handleSelect(e,place._id)}
                         id={place._id} />
                     </CTableDataCell>
