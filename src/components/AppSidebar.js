@@ -13,7 +13,7 @@ import CIcon from '@coreui/icons-react'
 
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
-
+import Logo from "../assets/icons/audify-horizontal.png"
 // sidebar nav config
 import navigation from '../_nav'
 
@@ -34,8 +34,7 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CIcon className="sidebar-brand-full" name="logo-negative" height={35} />
-        <CIcon className="sidebar-brand-narrow" name="sygnet" height={35} />
+        <img src={Logo}  height={100}/>
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>

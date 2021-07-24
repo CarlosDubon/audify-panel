@@ -1,5 +1,15 @@
-import React, {useState} from 'react'
-import {CButton, CCard, CCardBody, CCardHeader, CContainer, CForm, CFormControl, CFormLabel} from '@coreui/react'
+import React, {useEffect, useState} from 'react'
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CContainer,
+  CForm,
+  CFormControl,
+  CFormLabel,
+  CFormSelect
+} from '@coreui/react'
 import CMap from "../widgets/CMap";
 import DropZone from "../widgets/DropZone";
 import {toast} from "react-hot-toast";
@@ -8,23 +18,41 @@ import {useSelector} from "react-redux";
 
 const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius: 0}, ...props}) => {
   const token = useSelector((state) => state.user.token)
-
+  const [types,setTypes] = useState([])
   const [form,setForm] = useState({
     name: place.name,
     lat: place.latitude,
     lng: place.longitude,
-    radius: place.radius
+    radius: place.radius,
+    type:place.type
   })
   const [file,setFile] =useState()
+
+  useEffect(()=>{
+    fetchTypes()
+  },[])
+  const fetchTypes=async ()=>{
+    try {
+      let res = await axios.get(`${process.env.REACT_APP_API_URI}/speaker/types`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      setTypes(res.data)
+    }catch (e) {
+      console.log(e)
+    }
+  }
 
   const onSubmit=async ()=>{
     try {
 
-      if(form.name!=="" && form.lat!=="" && form.lng!=="" && file && form.radius >= 1){
+      if(form.name!=="" && form.lat!==0 && form.lng!==0 && file && form.radius >= 1 && form.type !==""){
         const fd = new FormData()
         fd.append("name",form.name)
         fd.append("latitude",form.lat)
         fd.append("longitude",form.lng)
+        fd.append("type",form.type)
         fd.append("sound",file)
         fd.append("radius", form.radius)
 
@@ -59,6 +87,7 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
       form.name && fd.append("name",form.name);
       form.lat  && fd.append("latitude",form.lat);
       form.lng  && fd.append("longitude",form.lng);
+      form.type && fd.append("type",form.type)
       file      && fd.append("sound",file);
       (form.radius >= 1) && fd.append("radius", form.radius);
 
@@ -106,40 +135,40 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
   return (
     <>
       <CCard className="mb-4">
-        {props.edit || <CCardHeader> Agregar lugar </CCardHeader>}
+        {props.edit || <CCardHeader> New speaker </CCardHeader>}
         <CCardBody>
           <CForm>
             <div className="row">
               <div className={"col-md-12 mb-3"}>
-                <CFormLabel htmlFor="place-name">Nombre: </CFormLabel>
+                <CFormLabel htmlFor="place-name">Name: </CFormLabel>
                 <CFormControl
                   value={form.name}
                   onChange={event => setForm({...form,name:event.target.value})}
                   type={"text"}
                   id="place-name"
-                  placeholder={"Ingresar nombre del lugar"}
+                  placeholder={"Type a speaker name"}
                 />
               </div>
               <div className="col-md-12 mt-3">
-                <div>Selecciona el sonido a reproducir:</div>
+                <div>Audio source:</div>
                 <div className={"mt-3"}>
                   <DropZone setFile={setFile} />
                 </div>
               </div>
               <div className="col-md-12 mt-3">
-                Selecciona la ubicación:
+                Pick a ubication
               </div>
               <div className="col-md-8 mt-3">
                 <CContainer>
                   <CMap
-                    place={ props.edit && place } 
+                    place={ props.edit && place }
                     onSelect={handleLatLngSet} radius={form.radius}/>
                 </CContainer>
               </div>
               <div className="col-md-4">
                 <div className="col-md-12 mt-3">
                   <div className={"mb-3"}>
-                    <CFormLabel htmlFor="place-lat">Latitud: </CFormLabel>
+                    <CFormLabel htmlFor="place-lat">Latitude: </CFormLabel>
                     <CFormControl
                       value={form.lat}
                       type={"text"}
@@ -148,7 +177,7 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
                     />
                   </div>
                   <div className={"mb-3"}>
-                    <CFormLabel htmlFor="place-long">Longitud: </CFormLabel>
+                    <CFormLabel htmlFor="place-long">Longitude: </CFormLabel>
                     <CFormControl
                       readOnly={true}
                       value={form.lng}
@@ -157,7 +186,7 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
                     />
                   </div>
                   <div className={"mb-3"}>
-                    <CFormLabel htmlFor="place-long">Radio de acción (metros): </CFormLabel>
+                    <CFormLabel htmlFor="place-long">Action radios (meters): </CFormLabel>
                     <CFormControl
                       value={form.radius}
                       onChange={event => setForm({...form,radius: parseFloat(event.target.value) })}
@@ -165,6 +194,18 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
                       min={1}
                       id="place-radius"
                     />
+                  </div>
+                  <div className="mb-3">
+                    <CFormLabel>Aproximation function</CFormLabel>
+                    <CFormSelect
+                      onChange={event => setForm({...form,type:event.target.value})} aria-label="Default select example">
+                      <option value={""}>Select a option</option>
+                      {
+                        types.map((type,i)=>(
+                          <option key={i} value={type.id}>{type.name}</option>
+                        ))
+                      }
+                    </CFormSelect>
                   </div>
                 </div>
               </div>

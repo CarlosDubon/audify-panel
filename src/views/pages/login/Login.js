@@ -17,7 +17,7 @@ import CIcon from '@coreui/icons-react'
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-hot-toast";
-
+import Logo from '../../../assets/icons/audify-negativo.png'
 const Login = (props) => {
   const dispatch = useDispatch()
   const token = useSelector((state) => state.user.token)
@@ -73,15 +73,15 @@ const Login = (props) => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm onSubmit={(e)=>e.preventDefault()}>
-                    <h1>Sraag Admin</h1>
-                    <p className="text-medium-emphasis">Inicia sesión con tu cuenta</p>
+                    <h1>Audify</h1>
+                    <p className="text-medium-emphasis">Login with your credentials</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon name="cil-user" />
                       </CInputGroupText>
                       <CFormControl
                         onChange={event => setUser(event.target.value)}
-                        placeholder="Usuario"
+                        placeholder="Username"
                         autoComplete="username" />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
@@ -91,29 +91,25 @@ const Login = (props) => {
                       <CFormControl
                         onChange={event => setPassword(event.target.value)}
                         type="password"
-                        placeholder="Contraseña"
+                        placeholder="Password"
                         autoComplete="current-password"
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs="6">
                         <CButton type={"submit"} onClick={triggerReq} color="primary" className="px-4">
-                          Iniciar sesion
+                          Login
                         </CButton>
                       </CCol>
-                      <CCol xs="6" className="text-right">
-                        <CButton color="link" className="px-0">
-                          Forgot password?
-                        </CButton>
-                      </CCol>
+
                     </CRow>
                   </CForm>
                 </CCardBody>
               </CCard>
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
-                  <div>
-
+                  <div >
+                    <img style={{width:"50%"}}  src={Logo} />
                   </div>
                 </CCardBody>
               </CCard>

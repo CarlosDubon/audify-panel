@@ -146,7 +146,7 @@ const Places = () => {
           <CTable responsive>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell> 
+                <CTableHeaderCell>
                 <CFormCheck
                     checked={deleteAll}
                     style={Style.cell}
@@ -158,6 +158,7 @@ const Places = () => {
                 <CTableHeaderCell>Latitude</CTableHeaderCell>
                 <CTableHeaderCell>Audio</CTableHeaderCell>
                 <CTableHeaderCell>Radius</CTableHeaderCell>
+                <CTableHeaderCell>Type</CTableHeaderCell>
                 <CTableHeaderCell>Options</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
@@ -178,6 +179,7 @@ const Places = () => {
                       <audio controls={true} src={(place.sound.startsWith("/upload"))?`${process.env.REACT_APP_URI}${place.sound}`:place.sound} />
                     </CTableDataCell>
                     <CTableDataCell style={Style.cell}>{place.radius} m</CTableDataCell>
+                    <CTableDataCell style={Style.cell}>{place.type.name}</CTableDataCell>
                     <CTableDataCell style={{ verticalAlign: "middle", textAlign: "center" }}>
                       <CButtonGroup role="group" aria-label="Basic example">
                         <CButton
