@@ -19,9 +19,9 @@ import {
 } from '@coreui/react'
 import axios from "axios";
 import {useSelector} from "react-redux";
-import {confirmAlert} from "react-confirm-alert";
 import {toast} from "react-hot-toast";
 import NewPlace from './NewPlace';
+import SearchControl from '../forms/search-control/SearchControl';
 
 const Places = () => {
   const token = useSelector(state => state.user.token)
@@ -31,6 +31,7 @@ const Places = () => {
   const [placeToDelete, setPlaceToDelete] = useState({})
   const [modalDeleteVisible, setModalDeteleVisible] = useState(false);
   const [deleteAll, setDeleteAll] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const [selectedPlaces,setSelectedPlaces] = useState([])
   useEffect(()=>{
@@ -92,6 +93,9 @@ const Places = () => {
       setSelectedPlaces(selectedPlaces.filter(p=>p!==id))
     }
   }
+  const handleSearch=(value)=> {
+    setSearchValue(value);
+  }
   const onDeleteMany=()=>{
     toast.promise(fetchDeleteMany(),{
       loading:"Procesando ...",
@@ -121,16 +125,22 @@ const Places = () => {
       throw e.message
     }
   }
+
+  const filteredPlaces = places.filter(place => place.name.includes(searchValue));
+
   return (
     <>
       <CCard className="mb-4">
-        <CCardHeader className={"d-flex justify-content-between"}>
-          Todos los lugares
+        <CCardHeader className={"d-flex justify-content-between align-items-center"}>
+          Speaker's list
+          <div style={{display:"flex"}}>
           {selectedPlaces.length > 0 &&(
             <CButton
               onClick={onDeleteMany}
-              size={"sm"} className={"text-white"} color={"danger"}>Eliminar seleccionados</CButton>
+              size={"sm"} className={"text-white"} color={"danger"}>Delete selected</CButton>
           )}
+          <SearchControl onSubmit={handleSearch}/>
+          </div>
         </CCardHeader>
         <CCardBody>
           <CTable responsive>
@@ -143,17 +153,17 @@ const Places = () => {
                     onChange={handleSelectAll}
                     id="All" />
                 </CTableHeaderCell>
-                <CTableHeaderCell>Nombre</CTableHeaderCell>
-                <CTableHeaderCell>Longitud</CTableHeaderCell>
-                <CTableHeaderCell>Latitud</CTableHeaderCell>
+                <CTableHeaderCell>Name</CTableHeaderCell>
+                <CTableHeaderCell>Longitude</CTableHeaderCell>
+                <CTableHeaderCell>Latitude</CTableHeaderCell>
                 <CTableHeaderCell>Audio</CTableHeaderCell>
-                <CTableHeaderCell>Radio de acción</CTableHeaderCell>
-                <CTableHeaderCell>Opciones</CTableHeaderCell>
+                <CTableHeaderCell>Radius</CTableHeaderCell>
+                <CTableHeaderCell>Options</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
               {
-                places.map(place=>(
+                filteredPlaces.map(place=>(
                   <CTableRow key={place._id}>
                     <CTableDataCell style={Style.cell} >
                       <CFormCheck

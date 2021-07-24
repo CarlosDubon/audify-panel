@@ -14,10 +14,12 @@ import {
 import {toast} from "react-hot-toast";
 import axios from "axios";
 import {useSelector} from "react-redux";
+import SearchControl from '../forms/search-control/SearchControl';
 
 const Users = (props) => {
   const token = useSelector(state => state.user.token)
   const [data,setData] = useState([])
+  const [searchValue, setSearchValue] = useState("");
 
   const [userToDelete,setUserToDelete]=useState(null)
   useEffect(()=>{
@@ -61,6 +63,9 @@ const Users = (props) => {
       throw e
     }
   }
+  const handleSearch = (value) => {
+    setSearchValue(value);
+  }
   const triggerUpdate=(id,role)=>{
     toast.promise(updateUser(id,role),{
       loading:"Processing...",
@@ -68,10 +73,16 @@ const Users = (props) => {
       error:(e)=>e
     })
   }
+
+  const usersFiltered = data.filter(user => user.username.includes(searchValue));
+
   return (
     <>
       <CCard>
-        <CCardHeader>All users</CCardHeader>
+        <CCardHeader className={"d-flex justify-content-between align-items-center"}>
+          All users
+          <SearchControl onSubmit={handleSearch}/>
+        </CCardHeader>
         <CCardBody>
           <CTable responsive>
             <CTableHead>
@@ -92,13 +103,13 @@ const Users = (props) => {
             </CTableHead>
             <CTableBody>
               {
-                data.map((user,i)=>(
+                usersFiltered.map((user,i)=>(
                   <CTableRow key={i}>
                     <CTableDataCell>{user.username}</CTableDataCell>
                     <CTableDataCell>{user.email}</CTableDataCell>
                     <CTableDataCell>{user.role==="ADMIN"?"Administrator":"User"}</CTableDataCell>
                     <CTableDataCell>
-                      <CButtonGroup role="group" aria-label="Basic example">
+                      <CButtonGroup style={{width: "100%"}} role="group" aria-label="Basic example">
                         <CButton
                           onClick={()=>{
                             setUserToDelete(user)
