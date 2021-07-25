@@ -3,7 +3,7 @@ import {Map, GoogleApiWrapper, Marker, Circle} from 'google-maps-react';
 
 import { RiSignalTowerLine } from 'react-icons/ri'
 
-const CMap = ({radius=0,...props}) => {
+const CMap = ({radius=0, height=0, places=[],...props}) => {
   const [position, setPosition] = useState()
   const [marker, setMarker] = useState()
   useEffect(() => {
@@ -36,18 +36,20 @@ const CMap = ({radius=0,...props}) => {
   }, [])
 
   const handleClick = (t, map, coord) => {
-    const {latLng} = coord;
-    const lat = latLng.lat();
-    const lng = latLng.lng();
+    if(props.onSelect) {
+      const {latLng} = coord;
+      const lat = latLng.lat();
+      const lng = latLng.lng();
 
-    setMarker({
-      title: "",
-      name: "",
-      position: {
-        lat, lng
-      }
-    })
-    props.onSelect(lat, lng)
+      setMarker({
+        title: "",
+        name: "",
+        position: {
+          lat, lng
+        }
+      })
+      props.onSelect(lat, lng)
+    }
   }
 
   if (!position) {
@@ -56,10 +58,33 @@ const CMap = ({radius=0,...props}) => {
     )
   }
 
+  const placeMarkers = places.map(place => (
+    <Marker 
+      position={{
+        lat: place.latitude,
+        lng: place.longitude
+      }}
+      name={place.name}/>
+  ));
+
+  const placeCircles = places.map(place => (
+    <Circle 
+        strokeColor='transparent'
+        strokeOpacity={0}
+        strokeWeight={5}
+        fillColor='#3F51B588'
+        fillOpacity={0.2}
+        center={{
+          lat: place.latitude,
+          lng: place.longitude
+        }}
+        radius={place.radius} />
+  ));
+
   return (
     <div style={{
       position: "relative",
-      height: 300
+      minHeight: height || 300,
     }}>
     <div style={{
       pointerEvents: "none", 
@@ -95,7 +120,7 @@ const CMap = ({radius=0,...props}) => {
               position={marker.position}
             />
         )}
-        {marker && (
+        {marker && radius && (
           <Circle 
               strokeColor='transparent'
               strokeOpacity={0}
@@ -105,6 +130,8 @@ const CMap = ({radius=0,...props}) => {
               center={marker.position}
               radius={radius || 0} />
         )}
+        {placeMarkers}
+        {placeCircles}
       </Map>
     </div>
   );
