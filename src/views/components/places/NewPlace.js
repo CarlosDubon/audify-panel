@@ -24,7 +24,7 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
     lat: place.latitude,
     lng: place.longitude,
     radius: place.radius,
-    type:place.type
+    type:place.type?.id
   })
   const [file,setFile] =useState()
 
@@ -158,7 +158,7 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
               <div className="col-md-12 mt-3">
                 Pick a ubication
               </div>
-              <div className="col-md-8 mt-3">
+              <div className="col-md-8 mt-3 col-sm-12">
                 <CContainer>
                   <CMap
                     place={ props.edit && place }
@@ -198,11 +198,12 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
                   <div className="mb-3">
                     <CFormLabel>Aproximation function</CFormLabel>
                     <CFormSelect
+                      value={form.type}
                       onChange={event => setForm({...form,type:event.target.value})} aria-label="Default select example">
                       <option value={""}>Select a option</option>
                       {
                         types.map((type,i)=>(
-                          <option key={i} value={type.id}>{type.name}</option>
+                          <option selected={form.type===type.id} key={i} value={type.id}>{type.name}</option>
                         ))
                       }
                     </CFormSelect>

@@ -6,7 +6,7 @@ const WidgetsDropdown = (props) => {
     <CRow>
       <CCol sm="6" lg="4">
         <CWidgetDropdown
-          className="mb-4"
+          className="mb-4 pb-3"
           color="primary"
           value={props.users}
           title="Users"
@@ -14,7 +14,7 @@ const WidgetsDropdown = (props) => {
       </CCol>
       <CCol sm="6" lg="4">
         <CWidgetDropdown
-          className="mb-4"
+          className="mb-4 pb-3"
           color="info"
           value={props.admins}
 
@@ -24,7 +24,7 @@ const WidgetsDropdown = (props) => {
       </CCol>
       <CCol sm="12" lg="4">
         <CWidgetDropdown
-          className="mb-4"
+          className="mb-4 pb-3"
           color="warning"
           value={props.speakers}
           title="Speakers"
