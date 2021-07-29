@@ -39,9 +39,9 @@ const Dashboard = (props) => {
       setUserCount(res.data.filter(user=>user.role ==="USER").length)
       setAdminCount(res.data.filter(user=>user.role ==="ADMIN").length)
     }catch (e){
-      props.history.goBack()
+      props.history.replace("/")
       console.log(e)
-      toast.error("Error al obtener usuarios, por favor intente nuevamente.")
+
     }
   }
   const fetchPlaces=async ()=>{
@@ -53,6 +53,7 @@ const Dashboard = (props) => {
       })
       setSpeakers(res.data)
     }catch (e){
+      props.history.replace("/")
 
     }
   }

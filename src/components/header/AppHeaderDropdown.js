@@ -34,7 +34,10 @@ const AppHeaderDropdown = () => {
             dispatch({ type: 'update_user',token:null })
             history.replace("/")
           }}
-          href="#">
+          style={{
+           cursor:"pointer"
+          }}
+          >
           <CIcon name="cil-lock-locked" className="me-2" />
           Cerrar sesión
         </CDropdownItem>

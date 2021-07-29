@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {BrowserRouter
+    as Router, Route, Switch} from 'react-router-dom'
 import './scss/style.scss'
 import {Toaster} from "react-hot-toast";
 
@@ -23,7 +24,7 @@ class App extends Component {
     return (
       <>
         <Toaster/>
-        <Router>
+        <Router basename={process.env.REACT_APP_BASEPATH}>
           <React.Suspense fallback={loading}>
             <Switch>
               <Route exact path="/" name="Login Page" render={(props) => <Login {...props} />}/>
