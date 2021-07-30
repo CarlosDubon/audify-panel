@@ -9,14 +9,14 @@ const EditProfile = React.lazy(()=>import("./views/components/profile/EditProfil
 const Users = React.lazy(()=>import("./views/components/users/Users"))
 const NewUser = React.lazy(()=>import("./views/components/users/NewUser"))
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard ,exact: true },
-  { path: '/dashboard/place', name: 'Lugares', component: Colors, exact: true },
-  { path: '/dashboard/place/all', name: 'Speakers', component: Colors },
-  { path: '/dashboard/place/new', name: 'Add new speaker', component: Typography  },
-  { path: '/dashboard/profile', name: 'Profile', component: EditProfile  },
-  { path: '/dashboard/users', name: 'Users', component: Users, exact: true },
-  { path: '/dashboard/users/new', name: 'New user', component: NewUser  },
+  { path: process.env.REACT_APP_BASEPATH+'/', exact: true, name: 'Home' },
+  { path: process.env.REACT_APP_BASEPATH+'/dashboard', name: 'Dashboard', component: Dashboard ,exact: true },
+  { path: process.env.REACT_APP_BASEPATH+'/dashboard/place', name: 'Lugares', component: Colors, exact: true },
+  { path: process.env.REACT_APP_BASEPATH+'/dashboard/place/all', name: 'Speakers', component: Colors },
+  { path: process.env.REACT_APP_BASEPATH+'/dashboard/place/new', name: 'Add new speaker', component: Typography  },
+  { path: process.env.REACT_APP_BASEPATH+'/dashboard/profile', name: 'Profile', component: EditProfile  },
+  { path: process.env.REACT_APP_BASEPATH+'/dashboard/users', name: 'Users', component: Users, exact: true },
+  { path: process.env.REACT_APP_BASEPATH+'/dashboard/users/new', name: 'New user', component: NewUser  },
   // { path: '/login', name: 'Login', component: Login },
   // { path: '/register', name: 'Register', component: Register },
   // { path: '/404', name: '404', component: Page404 },
