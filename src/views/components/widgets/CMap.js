@@ -60,6 +60,7 @@ const CMap = ({radius=0, height=0, places=[],...props}) => {
 
   const placeMarkers = places.map(place => (
     <Marker 
+      key={`${place._id}_marker`}
       position={{
         lat: place.latitude,
         lng: place.longitude
@@ -69,6 +70,7 @@ const CMap = ({radius=0, height=0, places=[],...props}) => {
 
   const placeCircles = places.map(place => (
     <Circle 
+        key={`${place._id}_circle`}
         strokeColor='transparent'
         strokeOpacity={0}
         strokeWeight={5}

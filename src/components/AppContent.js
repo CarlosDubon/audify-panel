@@ -1,11 +1,14 @@
 import React, { Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
+import { useLocation } from 'react-router'
 
 // routes config
 import routes from '../routes'
 
 const AppContent = () => {
+  const { pathname } = useLocation();
+
   return (
     <CContainer lg>
       <Suspense fallback={<CSpinner color="primary" />}>
