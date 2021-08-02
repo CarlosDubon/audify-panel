@@ -211,7 +211,7 @@ const Places = () => {
         visible={modalVisible} size="xl"
         onDismiss={()=> setModalVisible(false)}>
           <CModalHeader onDismiss={()=> closeEditModal()}>
-            <CModalTitle>Editar lugar</CModalTitle>
+            <CModalTitle>Create Speaker</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <NewPlace place={placeToEdit} edit onClose = {()=> closeEditModal()}/>
@@ -222,11 +222,11 @@ const Places = () => {
         visible={modalDeleteVisible}
         onDismiss={()=> setModalDeteleVisible(false)}>
           <CModalHeader onDismiss={()=> closeDeleteModal()}>
-            <CModalTitle> Eliminar lugar </CModalTitle>
+            <CModalTitle> Delete Speaker </CModalTitle>
           </CModalHeader>
           <CModalBody>
               <p>
-                ¿Estás seguro/a de eliminar {placeToDelete.name}? Esta acción es irreversible.
+                Are you sure to delete {placeToDelete.name}? It can't be undone.
               </p>
           </CModalBody>
           <CModalFooter>
@@ -236,7 +236,7 @@ const Places = () => {
                 closeDeleteModal();
               } }
               color = "danger" className={"text-white"}>
-              Confirmar
+              Accept
             </CButton>
           </CModalFooter>
       </CModal>

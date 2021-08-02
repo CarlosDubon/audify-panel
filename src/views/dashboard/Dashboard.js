@@ -3,20 +3,25 @@ import React, {lazy, useEffect, useState} from 'react'
 import {
   CCard,
   CCardBody,
-  CContainer
+  CModal,
+  CModalHeader,
+  CModalBody
 } from '@coreui/react'
 import {useSelector} from "react-redux";
 import CMap from '../components/widgets/CMap.js';
 import axios from "axios";
-import {toast} from "react-hot-toast";
+import NewPlace from '../components/places/NewPlace.js';
 
 const WidgetsDropdown = lazy(() => import('../components/widgets/WidgetsDropdown.js'))
 
 const Dashboard = (props) => {
-  const token = useSelector((state) => state.user.token)
-  const [userCount,setUserCount]=useState(0)
-  const [adminCount,setAdminCount]=useState(0)
-  const [speakers,setSpeakers]=useState([])
+  const token = useSelector((state) => state.user.token);
+  const [userCount,setUserCount]=useState(0);
+  const [adminCount,setAdminCount]=useState(0);
+  const [speakers,setSpeakers]=useState([]);
+  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
   useEffect(()=>{
     if(!token){
       props.history.replace("/")
@@ -58,14 +63,46 @@ const Dashboard = (props) => {
     }
   }
 
+  const onSelectPlaceHandler = (lat, lng) =>{
+    setSelectedPlace({
+      latitude: lat,
+      longitude: lng,
+    })
+  } 
+
+  const closeModal = () => {
+    setSelectedPlace(null);
+    fetchPlaces()
+    setModalVisible(false)
+  }
+
   return (
     <>
       <WidgetsDropdown users={userCount} admins={adminCount} speakers={speakers.length} />
       <CCard>
         <CCardBody>
-          <CMap places={speakers} height={500} />
+          <CMap
+            onInfoClick = {()=> {
+              setModalVisible(true)
+            }}
+            dashboard
+            onSelect={onSelectPlaceHandler} 
+            places={speakers} height={500} />
         </CCardBody>
       </CCard>
+      <CModal
+        visible={modalVisible} size="xl"
+        onDismiss={()=> setModalVisible(false)}>
+          <CModalHeader onDismiss={()=> closeModal()}/>
+          <CModalBody>
+            <NewPlace 
+              infoModal
+              place={{
+                latitude: selectedPlace?.latitude,
+                longitude: selectedPlace?.longitude
+              }} onClose = {()=> closeModal()}/>
+          </CModalBody>
+      </CModal>
     </>
   )
 }

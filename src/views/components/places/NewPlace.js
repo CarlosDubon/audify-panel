@@ -15,15 +15,17 @@ import DropZone from "../widgets/DropZone";
 import {toast} from "react-hot-toast";
 import axios from "axios";
 import {useSelector} from "react-redux";
+import { useHistory } from 'react-router-dom';
 
 const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius: 0}, ...props}) => {
   const token = useSelector((state) => state.user.token)
+  const history = useHistory();
   const [types,setTypes] = useState([])
   const [form,setForm] = useState({
-    name: place.name,
-    lat: place.latitude,
-    lng: place.longitude,
-    radius: place.radius,
+    name: place.name || "",
+    lat: place.latitude || 0,
+    lng: place.longitude || 0,
+    radius: place.radius || 1,
     type:place.type?.id
   })
   const [file,setFile] =useState()
@@ -63,11 +65,13 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
           }
         })
         if(res.status === 201){
-          props.history.replace("/dashboard")
+          history.replace("/dashboard")
+          if(props.onClose) {
+            props.onClose();
+          }
         }
       }else {
-        console.log(form)
-        throw "Existen campos vacíos, por favor llena todo el formulario"
+        throw "Empty fields, please complete the form"
       }
     }catch (e){
       if(e){
@@ -76,13 +80,14 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
         }
         throw e.message
       }
-      throw "Error interno, por favor intente más tarde."
+      throw "Internal Error, Please try it later"
     }
 
   };
 
   const onEdit=async ()=>{
     try {
+      if(form.name!=="" && form.lat!==0 && form.lng!==0 && file && form.radius >= 1 && form.type !==""){
       const fd = new FormData()
       form.name && fd.append("name",form.name);
       form.lat  && fd.append("latitude",form.lat);
@@ -102,6 +107,9 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
       } else {
         props.onClose()
       }
+    } else {
+      throw "Empty fields, please complete the form"
+    }
     }catch (e){
       if(e){
         if(e.response){
@@ -109,7 +117,7 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
         }
         throw e.message
       }
-      throw "Error interno, por favor intente más tarde."
+      throw "Internal Error, Please try it later"
     }
 
   }
@@ -135,7 +143,7 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
   return (
     <>
       <CCard className="mb-4">
-        {props.edit || <CCardHeader> New speaker </CCardHeader>}
+        {props.edit ? <CCardHeader> New speaker </CCardHeader> : <></>}
         <CCardBody>
           <CForm>
             <div className="row">
@@ -161,7 +169,7 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
               <div className="col-md-8 mt-3 col-sm-12">
                 <CContainer>
                   <CMap
-                    place={ props.edit && place }
+                    place={ (props.edit || props.infoModal) && place }
                     onSelect={handleLatLngSet} radius={form.radius}/>
                 </CContainer>
               </div>
@@ -203,7 +211,7 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
                       <option value={""}>Select a option</option>
                       {
                         types.map((type,i)=>(
-                          <option selected={form.type===type.id} key={i} value={type.id}>{type.name}</option>
+                          <option  key={i} value={type.id}>{type.name}</option>
                         ))
                       }
                     </CFormSelect>
