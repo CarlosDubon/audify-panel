@@ -87,7 +87,6 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
 
   const onEdit=async ()=>{
     try {
-      if(form.name!=="" && form.lat!==0 && form.lng!==0 && file && form.radius >= 1 && form.type !==""){
       const fd = new FormData()
       form.name && fd.append("name",form.name);
       form.lat  && fd.append("latitude",form.lat);
@@ -107,9 +106,6 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
       } else {
         props.onClose()
       }
-    } else {
-      throw "Empty fields, please complete the form"
-    }
     }catch (e){
       if(e){
         if(e.response){
