@@ -7,10 +7,11 @@ import {
   CModalHeader,
   CModalBody
 } from '@coreui/react'
-import {useSelector} from "react-redux";
+import {useSelector,useDispatch} from "react-redux";
 import CMap from '../components/widgets/CMap.js';
 import axios from "axios";
 import NewPlace from '../components/places/NewPlace.js';
+import toast from 'react-hot-toast';
 
 const WidgetsDropdown = lazy(() => import('../components/widgets/WidgetsDropdown.js'))
 
@@ -21,6 +22,7 @@ const Dashboard = (props) => {
   const [speakers,setSpeakers]=useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const dispatch = useDispatch()
 
   useEffect(()=>{
     if(!token){
@@ -44,7 +46,17 @@ const Dashboard = (props) => {
       setUserCount(res.data.filter(user=>user.role ==="USER").length)
       setAdminCount(res.data.filter(user=>user.role ==="ADMIN").length)
     }catch (e){
-      props.history.replace("/")
+      if(e.response){
+        if(e.response.status === 403){
+          toast.error("Su sesión a expirado")
+        }
+        if(e.response.status === 500){
+          toast.error("El servicio no se encuentra disponible.")
+        }
+        dispatch({ type: 'update_user',token:null })
+        props.history.replace("/")
+      }
+
       console.log(e)
 
     }
@@ -58,8 +70,7 @@ const Dashboard = (props) => {
       })
       setSpeakers(res.data)
     }catch (e){
-      props.history.replace("/")
-
+      console.log(e)
     }
   }
 

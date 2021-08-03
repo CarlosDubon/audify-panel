@@ -29,9 +29,10 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
     type:place.type?.id
   })
   const [file,setFile] =useState()
-
+  const [speakers,setSpeakers] = useState([])
   useEffect(()=>{
     fetchTypes()
+    fetchPlaces()
   },[])
   const fetchTypes=async ()=>{
     try {
@@ -46,6 +47,18 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
     }
   }
 
+  const fetchPlaces=async ()=>{
+    try {
+      let res = await axios.get(`${process.env.REACT_APP_API_URI}/speaker`,{
+        headers:{
+          "Authorization":`Bearer ${token}`
+        }
+      })
+      setSpeakers(res.data)
+    }catch (e){
+      console.log(e)
+    }
+  }
   const onSubmit=async ()=>{
     try {
 
@@ -165,6 +178,7 @@ const NewPlace = ({place = {_id: "", name: "", latitude: 0, longitude: 0, radius
               <div className="col-md-8 mt-3 col-sm-12">
                 <CContainer>
                   <CMap
+                    places={speakers}
                     place={ (props.edit || props.infoModal) && place }
                     onSelect={handleLatLngSet} radius={form.radius}/>
                 </CContainer>
