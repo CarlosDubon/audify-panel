@@ -34,10 +34,8 @@ const EditProfile = (props) => {
           Authorization:`Bearer ${token}`
         }
       })
-      console.log(res.data)
       setData(res.data)
     }catch (e){
-      console.log(e)
       toast.error("Error al obtener datos, intente nuevamente más tarde")
       props.history.replace("/")
     }
@@ -54,7 +52,7 @@ const EditProfile = (props) => {
       if(form.confirm === form.password){
         if(form.password.length > 8 && form.password.length < 32){
           if(form.password.match(/^(?=.*\d)+/)){
-            let res = await axios.put(`${process.env.REACT_APP_API_URI/user}`,{
+            let res = await axios.patch(`${process.env.REACT_APP_API_URI}/user/update/password`,{
               password:form.password
             },{
               headers:{
@@ -65,14 +63,14 @@ const EditProfile = (props) => {
               props.history.replace("/")
             }
           }else{
-            throw "La contraseña no contiene un numero o una letra como mímino"
+            throw "The password doesn't have at least one letter and one number"
           }
         }else {
-          throw "La contraseña contiene menos de 8 o mas de 32 caracteres"
+          throw "The password length is not between 8 and 32 characters"
         }
 
       }else {
-        throw "Las contraseñas no coinciden"
+        throw "Passwords doesn't match"
       }
     }catch (e){
       console.log(e)
@@ -85,56 +83,56 @@ const EditProfile = (props) => {
   return (
     <>
       <CCard className="mb-4">
-        <CCardHeader>Actualizar contraseña</CCardHeader>
+        <CCardHeader>User info</CCardHeader>
         <CCardBody>
-          <CRow>
-            <CCol md={6}>
+          <CRow className={"d-flex justify-content-center"}>
+            <CCol md={4}>
               <div className={"mb-3"}>
-                <h5>Información general:</h5>
+                <h5>General information:</h5>
               </div>
               <div>
                 <div>
-                  <b>Correo eléctronico:</b>
+                  <b>Email:</b>
                   <p>{data.email}</p>
                 </div>
                 <div>
-                  <b>Nombre de usuario:</b>
+                  <b>Username:</b>
                   <p>{data.username}</p>
                 </div>
                 <div>
                   <b>Role:</b>
-                  <p>{data.role}</p>
+                  <p>{data.role? (data.role.charAt(0).toUpperCase() + data.role.slice(1).toLowerCase()) : ""}</p>
                 </div>
               </div>
             </CCol>
-            <CCol md={6}>
+            <CCol md={4}>
               <div className={"mb-3"}>
-                <h5>Actualizar contraseña:</h5>
+                <h5>Update password:</h5>
               </div>
               <div>
                 <CForm onSubmit={event => event.preventDefault()}>
                   <div className={"mb-3"}>
-                    <CFormLabel>Nueva contraseña:</CFormLabel>
+                    <CFormLabel>New password:</CFormLabel>
                     <CFormControl
                       value={form.password}
                       type={"password"}
                       onChange={event => setForm({...form,password: event.target.value})}
                       placeholder={"Nueva contraseña"} />
                     <CFormFeedback>
-                      La contraseña debe contener:
+                      Password must have:
                     </CFormFeedback>
                     <CFormFeedback className={"small"}>
-                      Un minímo de 8 caracteres
+                      At least 8 characters
                     </CFormFeedback>
                     <CFormFeedback className={"small"}>
-                      Un maximo de 32 caracteress
+                      Least of 32 characters
                     </CFormFeedback>
                     <CFormFeedback className={"small"}>
-                      Un número y una letra
+                      One number and one letter
                     </CFormFeedback>
                   </div>
                   <div className={"mb-3"}>
-                    <CFormLabel>Confirmar contraseña:</CFormLabel>
+                    <CFormLabel>Password confirmation:</CFormLabel>
                     <CFormControl
                       type={"password"}
                       value={form.confirm}
@@ -143,7 +141,7 @@ const EditProfile = (props) => {
                   </div>
                   <div className={"d-flex justify-content-end"}>
                     <CButton type={"submit"} onClick={onSubmit}>
-                      Actualizar
+                      Update
                     </CButton>
                   </div>
                 </CForm>

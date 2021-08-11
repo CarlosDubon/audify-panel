@@ -187,13 +187,13 @@ const Places = () => {
                             setPlaceToDelete(place)
                             setModalDeteleVisible(true)
                           }}
-                          className={"text-white"} color="danger">Eliminar</CButton>
+                          className={"text-white"} color="danger">Delete</CButton>
                         <CButton
                           onClick = {()=>{
                             setPlaceToEdit(place);
                             setModalVisible(true);
                           }}
-                          className={"text-white"} color="info">Editar</CButton>
+                          className={"text-white"} color="info">Edit</CButton>
                       </CButtonGroup>
                     </CTableDataCell>
                   </CTableRow>

@@ -11,7 +11,7 @@ const NewUser = React.lazy(()=>import("./views/components/users/NewUser"))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard ,exact: true },
-  { path: '/dashboard/place', name: 'Lugares', component: Places, exact: true },
+  { path: '/dashboard/place', name: 'Places', component: Places, exact: true },
   { path: '/dashboard/place/all', name: 'Speakers', component: Places },
   { path: '/dashboard/place/new', name: 'Add new speaker', component: NewPlace  },
   { path: '/dashboard/profile', name: 'Profile', component: EditProfile  },

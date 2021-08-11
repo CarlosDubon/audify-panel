@@ -3,12 +3,13 @@ import {
   CButton,
   CCard,
   CCardBody,
-  CCardFooter,
   CCardHeader,
   CForm,
   CFormControl,
   CFormFeedback,
-  CFormLabel
+  CFormLabel,
+  CRow,
+  CCol
 } from "@coreui/react";
 import {toast} from "react-hot-toast";
 import axios from "axios";
@@ -39,11 +40,11 @@ const NewUser = (props) => {
               throw "Password required at least a numeric and alphabetic character"
             }
           }else {
-            throw "Password length is invalid"
+            throw "Password length is not between 8 and 32 characters"
           }
 
         }else {
-          throw "Password not match"
+          throw "Passwords doesn't match"
         }
       }else {
         throw "Empty fields"
@@ -71,47 +72,54 @@ const NewUser = (props) => {
         <CCardHeader>Create new user</CCardHeader>
         <CCardBody>
           <CForm onSubmit={event => event.preventDefault()}>
-            <div className="mb-3">
-              <CFormLabel>Username</CFormLabel>
-              <CFormControl
-                onChange={e=>setForm({...form,username: e.target.value})}
-                placeholder={"Username"} />
-            </div>
-            <div className="mb-3">
-              <CFormLabel>Email</CFormLabel>
-              <CFormControl
-                onChange={e=>setForm({...form,email: e.target.value})}
-                placeholder={"Email"} />
-            </div>
-            <div className="mb-3">
-              <CFormLabel>Password</CFormLabel>
-              <CFormControl
-                onChange={e=>setForm({...form,password: e.target.value})}
+            <CRow className={"d-flex justify-content-center"}>
+              <CCol md={4}>
+                <div className="mb-3">
+                  <CFormLabel>Username</CFormLabel>
+                  <CFormControl
+                    onChange={e=>setForm({...form,username: e.target.value})}
+                  placeholder={"Username"} />
+                </div>
+                <div className="mb-3">
+                  <CFormLabel>Email</CFormLabel>
+                  <CFormControl
+                    onChange={e=>setForm({...form,email: e.target.value})}
+                    placeholder={"Email"} />
+                </div>
+              </CCol>
 
-                type={"password"} placeholder={"Password"} />
-              <CFormFeedback>
-                Password needs the follow requiriments:
-              </CFormFeedback>
-              <CFormFeedback className={"small"}>
-                At least 8 characters
-              </CFormFeedback>
-              <CFormFeedback className={"small"}>
-                Least of 32 characteres
-              </CFormFeedback>
-              <CFormFeedback className={"small"}>
-                At least a number and a alphabetic character
-              </CFormFeedback>
-            </div>
-            <div className="mb-3">
-              <CFormLabel>Confirm password</CFormLabel>
-              <CFormControl
-                onChange={e=>setForm({...form,confirm: e.target.value})}
+              <CCol md={4}>
+                <div className="mb-3">
+                  <CFormLabel>Password</CFormLabel>
+                  <CFormControl
+                    onChange={e=>setForm({...form,password: e.target.value})}
 
-                type={"password"} placeholder={"Confirm password"} />
-            </div>
-            <div className={"d-flex justify-content-end"}>
-              <CButton type={"submit"} onClick={trigger}>Create</CButton>
-            </div>
+                    type={"password"} placeholder={"Password"} />
+                  <CFormFeedback>
+                    Password needs the follow requiriments:
+                  </CFormFeedback>
+                  <CFormFeedback className={"small"}>
+                    At least 8 characters
+                  </CFormFeedback>
+                  <CFormFeedback className={"small"}>
+                    Least of 32 characteres
+                  </CFormFeedback>
+                  <CFormFeedback className={"small"}>
+                    At least a number and a alphabetic character
+                  </CFormFeedback>
+                </div>
+                <div className="mb-3">
+                  <CFormLabel>Confirm password</CFormLabel>
+                  <CFormControl
+                    onChange={e=>setForm({...form,confirm: e.target.value})}
+
+                    type={"password"} placeholder={"Confirm password"} />
+                </div>
+                <div className={"d-flex justify-content-end"}>
+                  <CButton type={"submit"} onClick={trigger}>Create</CButton>
+                </div>
+              </CCol>
+            </CRow>
           </CForm>
         </CCardBody>
       </CCard>

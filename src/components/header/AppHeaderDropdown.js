@@ -1,9 +1,6 @@
 import React from 'react'
 import {
-  CAvatar,
-  CBadge,
   CDropdown,
-  CDropdownDivider,
   CDropdownHeader,
   CDropdownItem,
   CDropdownMenu,
@@ -11,7 +8,9 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router-dom"
+import {useHistory} from "react-router-dom";
+import { BsPersonFill } from 'react-icons/all';
+
 const AppHeaderDropdown = () => {
   const token = useSelector(state => state.user.token)
   const history = useHistory()
@@ -20,11 +19,22 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <div style={{background:"#000",width:"30px",height:"30px"}} className={"avatar-img"}></div>
+        <div 
+          style={{
+            background:"#000",width:"30px",
+            color: "#fff",
+            height:"30px", display: "flex", 
+            justifyContent: "center", alignItems: "center"
+          }} 
+          className={"avatar-img"}>
+          <BsPersonFill/>
+        </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
-        <CDropdownItem href="/dashboard/profile">
+        <CDropdownItem onClick={()=>{
+          history.replace("/dashboard/profile");
+        }}>
           <CIcon name="cil-user" className="me-2" />
           Profile
         </CDropdownItem>

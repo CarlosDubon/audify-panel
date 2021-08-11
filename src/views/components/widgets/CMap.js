@@ -1,7 +1,10 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState,} from 'react';
 import {Map, GoogleApiWrapper, Marker, Circle, InfoWindow} from 'google-maps-react';
 import icon from '../../../assets/icons/signal.png';
 import iconRed from '../../../assets/icons/signal-red.png';
+
+const LAT_DEFAULT = 13.67957974806625;
+const LONG_DEFAULT = -89.23629666639094
 
 const CMap = ({radius=0, height=0, places=[], dashboard = false,...props}) => {
   const [position, setPosition] = useState()
@@ -30,9 +33,17 @@ const CMap = ({radius=0, height=0, places=[], dashboard = false,...props}) => {
             lat: position.coords.latitude,
             long: position.coords.longitude
           })
+        }, ()=> {
+          setPosition({
+            lat: LAT_DEFAULT, 
+            long: LONG_DEFAULT
+          })
         })
       } else {
-        setPosition({})
+        setPosition({
+          lat: LAT_DEFAULT, 
+          long: LONG_DEFAULT
+        })
       }
     }
   }, []);
@@ -73,7 +84,15 @@ const CMap = ({radius=0, height=0, places=[], dashboard = false,...props}) => {
     )
   }
 
-  const placeMarkers = places.map(place => (
+  const placesFiltered = places.filter((place)=> {
+    if(props.place) {
+      return props.place._id !== place._id
+    }else {
+      return true;
+    }
+  })
+
+  const placeMarkers = placesFiltered.map(place => (
     <Marker 
       key={`${place._id}_marker`}
       position={{
@@ -89,7 +108,7 @@ const CMap = ({radius=0, height=0, places=[], dashboard = false,...props}) => {
       name={place.name}/>
   ));
 
-  const placeCircles = places.map(place => (
+  const placeCircles = placesFiltered.map(place => (
     <Circle 
         key={`${place._id}_circle`}
         strokeColor='transparent'

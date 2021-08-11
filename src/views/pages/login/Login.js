@@ -124,24 +124,26 @@ const Login = (props) => {
                       />
                     </CInputGroup>
                     <CRow>
-                      <CCol xs="6">
-                        <CButton type={"submit"} onClick={triggerReq} color="primary" className="px-4">
+                      <CCol lg="6" className={"d-flex justify-content-center align-items-center mb-2"}>
+                        <CButton type={"submit"} onClick={triggerReq} color="primary" className="px-4 w-100">
                           Login
                         </CButton>
                       </CCol>
-                      <CCol xs={6}>
+                      <CCol lg={6} className={"d-flex justify-content-center align-items-center mb-2"}>
                         <CLink
                           onClick={()=>setModal(true)}
                           style={{
-                          cursor:"pointer"
-                        }}>Forgot your password?</CLink>
+                            cursor:"pointer"
+                          }}>
+                          Forgot your password?
+                        </CLink>
                       </CCol>
                     </CRow>
                   </CForm>
                 </CCardBody>
               </CCard>
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
-                <CCardBody className="text-center">
+                <CCardBody className="text-center d-flex justify-content-center align-items-center">
                   <div >
                     <img style={{width:"50%"}}  src={Logo} />
                   </div>
