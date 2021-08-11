@@ -40,9 +40,10 @@ const RecoveryPassword = (props) => {
       if(confirm ===  password){
         if(password.length > 8 &&   password.length < 32){
           if(password.match(/^(?=.*\d)+/)){
+            const params = new URLSearchParams(props.history.location.search);
             let res = await axios.post(`${process.env.REACT_APP_API_URI}/auth/password-recovery`,{
               password:password,
-              token:props.history.location.search.replace("?t=","")
+              token: params.get("t")
             })
             if(res.status===200){
               props.history.replace("/")
