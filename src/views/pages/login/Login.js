@@ -10,8 +10,9 @@ import {
   CForm,
   CFormControl,
   CInputGroup,
-  CInputGroupText,
+  CInputGroupText, CLink, CModal, CModalBody, CModalHeader,
   CRow,
+  CAlert, CFormLabel
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import axios from "axios";
@@ -25,6 +26,8 @@ const Login = (props) => {
   const [user,setUser] = useState("")
   const [password,setPassword] = useState("")
 
+  const [modal,setModal]=useState(null)
+  const [email,setEmail]=useState("")
   useEffect(()=>{
     if(token){
       props.history.replace("/dashboard")
@@ -101,7 +104,13 @@ const Login = (props) => {
                           Login
                         </CButton>
                       </CCol>
-
+                      <CCol xs={6}>
+                        <CLink
+                          onClick={()=>setModal(true)}
+                          style={{
+                          cursor:"pointer"
+                        }}>Forgot your password?</CLink>
+                      </CCol>
                     </CRow>
                   </CForm>
                 </CCardBody>
@@ -116,6 +125,36 @@ const Login = (props) => {
             </CCardGroup>
           </CCol>
         </CRow>
+        <CModal
+          onDismiss={()=> {
+            setEmail("")
+            setEmail(false)
+          }}
+          visible={modal}>
+          <CModalHeader onDismiss={()=> {
+            setModal(false)
+            setEmail("")
+          }}>
+            Forgot password?
+          </CModalHeader>
+          <CModalBody>
+            <CAlert color="dark">Enter your user or email and we will send you a email with reset password instructions!</CAlert>
+            <CForm onSubmit={event => event.preventDefault()}>
+              <div className="mb-3">
+                <CFormLabel>Username / email</CFormLabel>
+                <CFormControl
+                  value={email}
+                  onChange={e=>setEmail(e.target.value)}
+                  placeholder={"Type your username or email"} />
+              </div>
+              <div className="d-flex justify-content-end">
+                <CButton type={"submit"}>
+                  Recovery
+                </CButton>
+              </div>
+            </CForm>
+          </CModalBody>
+        </CModal>
       </CContainer>
     </div>
   )
