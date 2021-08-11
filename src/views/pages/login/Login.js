@@ -138,6 +138,16 @@ const Login = (props) => {
                           Forgot your password?
                         </CLink>
                       </CCol>
+                      <CCol xs={12} className={"d-flex justify-content-center align-items-center mb-2"}>
+                        <CLink
+                          href={process.env.REACT_APP_DOWNLOAD_URI || "#"}
+                          target="_blank"
+                          style={{
+                            cursor:"pointer"
+                          }}>
+                          Download the app from github
+                        </CLink>
+                      </CCol>
                     </CRow>
                   </CForm>
                 </CCardBody>
