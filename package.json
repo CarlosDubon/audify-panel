@@ -49,7 +49,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "production": "env-cmd -f .env.realese react-scripts start",
+    "production": "env-cmd -f .env.release react-scripts start",
     "build": "react-scripts build",
     "lint": "eslint \"src/**/*.js\"",
     "test": "react-scripts test",
