@@ -43,8 +43,12 @@ const Login = (props) => {
         })
 
         if(res.status === 200){
-          dispatch({ type: 'update_user', token: res.data.token })
-          props.history.push("/dashboard")
+          if(res.data.role === "ADMIN") {
+            dispatch({type: 'update_user', token: res.data.token})
+            props.history.push("/dashboard")
+          }else{
+            throw "Does not have admin permissions"
+          }
         }
 
 
@@ -57,6 +61,9 @@ const Login = (props) => {
           throw "Credenciales invalidas"
         }
       }
+      if(e.message){
+        throw e.message
+      }
       throw e
     }
   }
@@ -66,6 +73,24 @@ const Login = (props) => {
       success:"Bienvenido!",
       loading:"Verificando datos..."
     })
+  }
+  const onRecovery=async ()=>{
+    if(email!==""){
+      try {
+        let res = await axios.post(`${process.env.REACT_APP_API_URI}/auth/forgot-password`,{
+          username:email
+        })
+        if(res.status===200){
+          toast.success("Email sent")
+          setModal(false)
+          setEmail("")
+        }
+      }catch (e){
+        toast.error("Internal error, try again later")
+      }
+    }else {
+      toast.error("Empy field")
+    }
   }
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
@@ -128,7 +153,7 @@ const Login = (props) => {
         <CModal
           onDismiss={()=> {
             setEmail("")
-            setEmail(false)
+            setModal(false)
           }}
           visible={modal}>
           <CModalHeader onDismiss={()=> {
@@ -148,7 +173,7 @@ const Login = (props) => {
                   placeholder={"Type your username or email"} />
               </div>
               <div className="d-flex justify-content-end">
-                <CButton type={"submit"}>
+                <CButton onClick={onRecovery } type={"submit"}>
                   Recovery
                 </CButton>
               </div>

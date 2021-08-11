@@ -15,19 +15,63 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import Logo from "../../../assets/icons/audify-negativo.png";
-import Toast from 'react-hot-toast'
+import Toast, {toast} from 'react-hot-toast'
+import axios from "axios";
 
 const RecoveryPassword = (props) => {
   const [password, setPassword] = useState("")
   const [confirm, setConfirm] = useState("")
 
-  const onSubmit = () => {
-    props.history.push("/")
-    Toast.success("Email sended")
-  }
   useEffect(()=>{
-    console.log(props.history.location.search.replace("?t=",""))
+    if(props.history.location.search.replace("?t=","")===""){
+      props.history.push("/")
+    }
   },[])
+  const onSubmit=()=>{
+    toast.promise(fetchEdit(),{
+      loading:"Proccesing...",
+      success:"Password recovered",
+      error:(e)=>e
+    })
+  }
+
+  const fetchEdit=async ()=>{
+    try {
+      if(confirm ===  password){
+        if(password.length > 8 &&   password.length < 32){
+          if(password.match(/^(?=.*\d)+/)){
+            let res = await axios.post(`${process.env.REACT_APP_API_URI}/auth/password-recovery`,{
+              password:password,
+              token:props.history.location.search.replace("?t=","")
+            })
+            if(res.status===200){
+              props.history.replace("/")
+            }
+          }else{
+            throw "Password needs at least a letter and number"
+          }
+        }else {
+          throw "Password length needs at least 8 characters"
+        }
+
+      }else {
+        throw "Password not match"
+      }
+    }catch (e){
+      console.log(e)
+      if(e.response){
+        if(e.response.status===400){
+          props.history.replace("/")
+          throw "Expired"
+        }
+      }
+      if(e.message){
+        throw e.message
+      }
+      throw e
+    }
+  }
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
