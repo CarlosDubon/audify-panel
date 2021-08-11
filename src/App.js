@@ -39,7 +39,7 @@ class App extends Component {
               <Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />}/>
               <Route exact path="/500" name="Page 500" render={(props) => <Page500 {...props} />}/>
               <Route path="/dashboard" name="Home" render={(props) => <DefaultLayout {...props} />}/>
-              <Route path="/recovery-password" name="Home" render={(props) => <RecoveryPassword {...props} />}/>
+              <Route path="/password-recovery" name="Home" render={(props) => <RecoveryPassword {...props} />}/>
             </Switch>
           </React.Suspense>
         </Router>

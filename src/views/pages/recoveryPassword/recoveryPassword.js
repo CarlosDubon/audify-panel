@@ -56,7 +56,7 @@ const RecoveryPassword = (props) => {
         }
 
       }else {
-        throw "Password not match"
+        throw "Password doesn't match"
       }
     }catch (e){
       console.log(e)
@@ -95,16 +95,16 @@ const RecoveryPassword = (props) => {
                         placeholder="Password"/>
                     </CInputGroup>
                     <CFormFeedback>
-                      La contraseña debe contener:
+                      Password must have:
                     </CFormFeedback>
                     <CFormFeedback className={"small"}>
-                      Un minímo de 8 caracteres
+                      At least 8 characters
                     </CFormFeedback>
                     <CFormFeedback className={"small"}>
-                      Un maximo de 32 caracteress
+                      Least of 32 characters
                     </CFormFeedback>
                     <CFormFeedback className={"small"}>
-                      Un número y una letra
+                      One number and one letter
                     </CFormFeedback>
                     <CInputGroup className="mb-4 mt-3">
                       <CInputGroupText>
